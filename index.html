@@ -1,0 +1,1933 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>华伦罗兰 - 中高端朵花刺绣花边面料商城</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #C9A86C;
+            --primary-dark: #A08255;
+            --primary-light: #E8DCC8;
+            --dark: #1A1A1A;
+            --dark-light: #2D2D2D;
+            --gray: #666;
+            --gray-light: #999;
+            --light: #F5F5F0;
+            --white: #FFFFFF;
+            --gold: #D4AF37;
+            --red: #E53935;
+            --green: #43A047;
+        }
+        
+        body {
+            font-family: 'Inter', 'Noto Serif SC', sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        /* 导航 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+        
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            border-radius: 8px;
+        }
+        
+        .logo-text h1 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .logo-text p {
+            font-size: 11px;
+            color: var(--gray);
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--dark);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .cart-btn {
+            position: relative;
+            padding: 8px 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--red);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .user-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--primary);
+            background: white;
+            color: var(--primary);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        /* 页面内容 */
+        .main-content {
+            padding-top: 70px;
+            min-height: 100vh;
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        /* 首页 */
+        .hero {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-light) 100%);
+            color: white;
+            padding: 100px 40px;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            color: var(--primary-light);
+            margin-bottom: 40px;
+        }
+        
+        .hero-btns {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 14px 32px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 1px solid var(--primary);
+        }
+        
+        /* 产品区 */
+        .section {
+            padding: 80px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .section-title p {
+            color: var(--gray);
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        
+        .product-img {
+            height: 220px;
+            background: linear-gradient(135deg, var(--primary-light), var(--light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .product-desc {
+            font-size: 13px;
+            color: var(--gray);
+            margin-bottom: 12px;
+        }
+        
+        .product-price {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+        
+        .price-current {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--red);
+        }
+        
+        .price-unit {
+            font-size: 13px;
+            color: var(--gray);
+        }
+        
+        .product-tags {
+            display: flex;
+            gap: 6px;
+            margin-top: 12px;
+        }
+        
+        .product-tag {
+            padding: 4px 8px;
+            background: var(--light);
+            border-radius: 4px;
+            font-size: 11px;
+            color: var(--gray);
+        }
+        
+        /* 商品详情页 */
+        .product-detail {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+        
+        .product-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+        
+        .product-gallery {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .gallery-main {
+            height: 400px;
+            background: linear-gradient(135deg, var(--primary-light), var(--light));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 120px;
+            margin-bottom: 20px;
+        }
+        
+        .product-info-detail h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .product-price-detail {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+        
+        .price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+        }
+        
+        .price-label {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .price-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--red);
+        }
+        
+        .spec-section {
+            margin-bottom: 24px;
+        }
+        
+        .spec-title {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 12px;
+        }
+        
+        .spec-options {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .spec-option {
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .spec-option:hover, .spec-option.active {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(201,168,108,0.1);
+        }
+        
+        .quantity-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .quantity-control button {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: white;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        .quantity-control input {
+            width: 60px;
+            height: 40px;
+            border: none;
+            text-align: center;
+            font-size: 16px;
+        }
+        
+        .action-btns {
+            display: flex;
+            gap: 16px;
+        }
+        
+        .btn-buy {
+            flex: 1;
+            padding: 16px;
+            background: var(--red);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .btn-cart {
+            flex: 1;
+            padding: 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        /* 购物车 */
+        .cart-page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+        
+        .cart-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+        
+        .cart-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+        
+        .cart-list {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+        }
+        
+        .cart-item {
+            display: grid;
+            grid-template-columns: 80px 1fr auto auto auto;
+            gap: 20px;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        
+        .cart-item-img {
+            width: 80px;
+            height: 80px;
+            background: var(--light);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+        
+        .cart-item-info h4 {
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        
+        .cart-item-info p {
+            font-size: 13px;
+            color: var(--gray);
+        }
+        
+        .cart-item-price {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--red);
+        }
+        
+        .cart-item-total {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        
+        .remove-btn {
+            color: var(--gray);
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        .cart-summary {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            height: fit-content;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+        
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 16px;
+            border-top: 1px solid #eee;
+            margin-top: 16px;
+        }
+        
+        .summary-total .price {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--red);
+        }
+        
+        .checkout-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--red);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        /* 结算页 */
+        .checkout-page {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+        
+        .checkout-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+        
+        .checkout-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .section-header {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .address-list {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .address-card {
+            padding: 16px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            cursor: pointer;
+            min-width: 280px;
+        }
+        
+        .address-card.active {
+            border-color: var(--primary);
+            background: rgba(201,168,108,0.05);
+        }
+        
+        .address-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .address-phone {
+            color: var(--gray);
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+        
+        .address-detail {
+            font-size: 13px;
+            color: var(--gray);
+        }
+        
+        .payment-methods {
+            display: flex;
+            gap: 16px;
+        }
+        
+        .payment-method {
+            padding: 16px 32px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .payment-method.active {
+            border-color: var(--primary);
+        }
+        
+        .order-items {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .order-item {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        
+        .order-item-img {
+            width: 60px;
+            height: 60px;
+            background: var(--light);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .order-item-info {
+            flex: 1;
+        }
+        
+        .order-item-price {
+            font-weight: 600;
+            color: var(--red);
+        }
+        
+        /* 支付页 */
+        .payment-page {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        
+        .payment-amount {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--red);
+            margin-bottom: 8px;
+        }
+        
+        .payment-label {
+            color: var(--gray);
+            margin-bottom: 40px;
+        }
+        
+        .qr-code {
+            width: 280px;
+            height: 280px;
+            background: white;
+            margin: 0 auto 30px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--gray);
+            border: 1px solid #eee;
+        }
+        
+        .payment-tips {
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        /* 用户中心 */
+        .user-page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+        
+        .user-layout {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 30px;
+        }
+        
+        .user-sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+        }
+        
+        .user-avatar-large {
+            width: 80px;
+            height: 80px;
+            background: var(--primary);
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+        }
+        
+        .user-name {
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+        
+        .user-menu {
+            list-style: none;
+        }
+        
+        .user-menu li {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-radius: 6px;
+            margin-bottom: 4px;
+        }
+        
+        .user-menu li:hover, .user-menu li.active {
+            background: var(--light);
+            color: var(--primary);
+        }
+        
+        .user-content {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+        }
+        
+        .order-tabs {
+            display: flex;
+            gap: 24px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 24px;
+        }
+        
+        .order-tab {
+            padding: 12px 0;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .order-tab.active {
+            border-bottom-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .order-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+        
+        .order-header {
+            background: var(--light);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+        
+        .order-status {
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .order-body {
+            padding: 16px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        
+        .order-footer {
+            padding: 12px 16px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        
+        .btn-small {
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .btn-pay {
+            background: var(--red);
+            color: white;
+        }
+        
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            color: var(--gray);
+        }
+        
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+        
+        /* Toast提示 */
+        .toast {
+            position: fixed;
+            top: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            z-index: 2000;
+            display: none;
+        }
+        
+        .toast.show {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        
+        /* 语言切换 */
+        .lang-btn {
+            padding: 6px 14px;
+            background: transparent;
+            border: 1.5px solid var(--primary);
+            color: var(--primary);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .lang-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* WhatsApp 浮动按钮 */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 58px;
+            height: 58px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            z-index: 9999;
+            box-shadow: 0 4px 16px rgba(37,211,102,0.4);
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.12);
+        }
+        .whatsapp-float .wa-tooltip {
+            position: absolute;
+            right: 68px;
+            background: var(--dark);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            white-space: nowrap;
+            display: none;
+        }
+        .whatsapp-float:hover .wa-tooltip {
+            display: block;
+        }
+
+        /* PayPal 支付按钮 */
+        .paypal-btn {
+            width: 100%;
+            padding: 14px;
+            background: #0070BA;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background 0.2s;
+        }
+        .paypal-btn:hover { background: #005a95; }
+
+        /* 国际询盘浮窗 */
+        .inquiry-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+        }
+        .inquiry-modal.show { display: flex; }
+        .inquiry-box {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 480px;
+            width: 90%;
+            position: relative;
+        }
+        .inquiry-box h2 { font-size: 22px; margin-bottom: 8px; }
+        .inquiry-box p { color: var(--gray); margin-bottom: 24px; font-size: 14px; }
+        .inquiry-close {
+            position: absolute;
+            top: 16px; right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray);
+            background: none;
+            border: none;
+        }
+        .inquiry-options {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .inquiry-option {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 20px;
+            border: 1.5px solid #eee;
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 15px;
+            transition: border-color 0.2s;
+            cursor: pointer;
+        }
+        .inquiry-option:hover { border-color: var(--primary); }
+        .inquiry-option .opt-icon { font-size: 26px; }
+
+        /* 页脚 */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 40px 30px;
+            margin-top: 80px;
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
+        
+        .footer-brand h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+        
+        .footer-brand p {
+            color: var(--gray-light);
+            font-size: 14px;
+        }
+        
+        .footer h4 {
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: var(--gray-light);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 40px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            color: var(--gray-light);
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo" onclick="showPage('home')">
+                <div class="logo-icon"></div>
+                <div class="logo-text">
+                    <h1>华伦罗兰®</h1>
+                    <p id="logoSub">杭州台艺服饰辅料</p>
+                </div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a onclick="showPage('home')" class="t" data-zh="首页" data-en="Home">首页</a></li>
+                <li><a onclick="showPage('products')" class="t" data-zh="全部商品" data-en="Products">全部商品</a></li>
+                <li><a onclick="showPage('custom')" class="t" data-zh="定制服务" data-en="Custom">定制服务</a></li>
+                <li><a onclick="showPage('about')" class="t" data-zh="关于我们" data-en="About">关于我们</a></li>
+                <li><a onclick="showInquiry()" style="color: var(--primary); font-weight:600;" class="t" data-zh="国际采购" data-en="Global Order">国际采购</a></li>
+            </ul>
+            
+            <div class="nav-right">
+                <button class="lang-btn" id="langBtn" onclick="toggleLang()">🌐 EN</button>
+                <button class="cart-btn" onclick="showPage('cart')">
+                    🛒 <span class="t" data-zh="购物车" data-en="Cart">购物车</span>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <button class="user-btn" onclick="showPage('user')">👤 <span class="t" data-zh="我的" data-en="Mine">我的</span></button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Toast提示 -->
+    <div class="toast" id="toast"></div>
+
+    <!-- WhatsApp 浮动按钮 -->
+    <a class="whatsapp-float" href="https://wa.me/8615158088222" target="_blank" title="Contact via WhatsApp">
+        <span class="wa-tooltip">Chat on WhatsApp</span>
+        💬
+    </a>
+
+    <!-- 国际采购询盘弹窗 -->
+    <div class="inquiry-modal" id="inquiryModal">
+        <div class="inquiry-box">
+            <button class="inquiry-close" onclick="closeInquiry()">×</button>
+            <h2 id="inq-title">🌍 国际采购 / Global Order</h2>
+            <p id="inq-sub">选择联系方式，我们将在24小时内回复<br>Choose a contact method, we'll reply within 24h</p>
+            <div class="inquiry-options">
+                <a class="inquiry-option" href="https://wa.me/8615158088222?text=Hello, I'm interested in your embroidery lace products. Please send me more details." target="_blank">
+                    <span class="opt-icon">💬</span>
+                    <div>
+                        <div style="font-weight:600;">WhatsApp</div>
+                        <div style="font-size:12px;color:var(--gray);">+86 151 5808 8222</div>
+                    </div>
+                </a>
+                <a class="inquiry-option" href="mailto:inquiry@hualunluolan.com?subject=Product Inquiry - Embroidery Lace&body=Hello, I am interested in your products. Please provide a catalog and pricing." target="_blank">
+                    <span class="opt-icon">📧</span>
+                    <div>
+                        <div style="font-weight:600;">Email</div>
+                        <div style="font-size:12px;color:var(--gray);">inquiry@hualunluolan.com</div>
+                    </div>
+                </a>
+                <a class="inquiry-option" onclick="showPaypalInfo()">
+                    <span class="opt-icon">💳</span>
+                    <div>
+                        <div style="font-weight:600;">PayPal Payment</div>
+                        <div style="font-size:12px;color:var(--gray);">Secure international payment</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- PayPal 付款说明弹窗 -->
+    <div class="inquiry-modal" id="paypalModal">
+        <div class="inquiry-box">
+            <button class="inquiry-close" onclick="document.getElementById('paypalModal').classList.remove('show')">×</button>
+            <h2>💳 PayPal Payment</h2>
+            <p>Please contact us via WhatsApp or Email first to confirm your order details, then we will send you a PayPal payment link.</p>
+            <div style="background: #f0f7ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                <div style="font-size: 14px; color: #333; line-height: 2;">
+                    <div>📦 <strong>MOQ:</strong> 10 yards per design</div>
+                    <div>⏱️ <strong>Lead Time:</strong> 7-15 business days</div>
+                    <div>🚚 <strong>Shipping:</strong> DHL / FedEx / EMS</div>
+                    <div>💱 <strong>Currency:</strong> USD / EUR / CNY</div>
+                </div>
+            </div>
+            <a class="inquiry-option" href="https://wa.me/8615158088222?text=Hello, I want to place an order via PayPal. Please send me the payment link." target="_blank" style="margin-top:8px;">
+                <span class="opt-icon">💬</span>
+                <div>
+                    <div style="font-weight:600;">Contact via WhatsApp to Pay</div>
+                    <div style="font-size:12px;color:var(--gray);">+86 151 5808 8222</div>
+                </div>
+            </a>
+        </div>
+    </div>
+    
+    <!-- 页面内容 -->
+    <div class="main-content">
+        <!-- 首页 -->
+        <div id="page-home" class="page active">
+            <section class="hero">
+                <h1 class="t" data-zh="华伦罗兰 · 高端刺绣花边" data-en="Hualun Luolan · Premium Embroidery Lace">华伦罗兰 · 高端刺绣花边</h1>
+                <p class="t" data-zh="9年专注中高端朵花刺绣花边面料 | 来样定制 | 小单快反" data-en="9 Years Specializing in Premium Embroidery Lace | Custom Orders | Fast Turnaround">9年专注中高端朵花刺绣花边面料 | 来样定制 | 小单快反</p>
+                <div class="hero-btns">
+                    <button class="btn btn-primary t" data-zh="立即选购" data-en="Shop Now" onclick="showPage('products')">立即选购</button>
+                    <button class="btn btn-outline t" data-zh="定制咨询" data-en="Custom Inquiry" onclick="showPage('custom')">定制咨询</button>
+                    <button class="btn btn-outline" style="border-color:var(--gold);color:var(--gold);" onclick="showInquiry()">🌍 <span class="t" data-zh="国际采购" data-en="Global Order">国际采购</span></button>
+                </div>
+            </section>
+            
+            <section class="section">
+                <div class="section-title">
+                    <h2>热销产品</h2>
+                    <p>精选中高端刺绣花边面料，品质保证</p>
+                </div>
+                <div class="products-grid" id="homeProducts"></div>
+            </section>
+        </div>
+        
+        <!-- 全部商品 -->
+        <div id="page-products" class="page">
+            <section class="section">
+                <div class="section-title">
+                    <h2>全部商品</h2>
+                    <p>浏览我们的全部产品线</p>
+                </div>
+                <div class="products-grid" id="allProducts"></div>
+            </section>
+        </div>
+        
+        <!-- 商品详情 -->
+        <div id="page-product" class="page">
+            <div class="product-detail">
+                <div class="product-detail-grid">
+                    <div class="product-gallery">
+                        <div class="gallery-main" id="productImage">🌸</div>
+                    </div>
+                    <div class="product-info-detail">
+                        <h1 id="productName">产品名称</h1>
+                        <div class="product-price-detail">
+                            <div class="price-row">
+                                <span class="price-label" data-lang="price">价格</span>
+                                <span class="price-value" id="productPrice">¥0</span>
+                                <span class="price-unit" id="productUnit">/码</span>
+                            </div>
+                        </div>
+                        
+                        <div class="spec-section">
+                            <div class="spec-title">选择颜色</div>
+                            <div class="spec-options">
+                                <div class="spec-option active">米白色</div>
+                                <div class="spec-option">象牙白</div>
+                                <div class="spec-option">香槟金</div>
+                                <div class="spec-option">古铜色</div>
+                            </div>
+                        </div>
+                        
+                        <div class="spec-section">
+                            <div class="spec-title">选择宽度</div>
+                            <div class="spec-options">
+                                <div class="spec-option active">3cm</div>
+                                <div class="spec-option">5cm</div>
+                                <div class="spec-option">8cm</div>
+                                <div class="spec-option">10cm</div>
+                            </div>
+                        </div>
+                        
+                        <div class="quantity-section">
+                            <span class="spec-title">数量</span>
+                            <div class="quantity-control">
+                                <button onclick="changeQuantity(-1)">-</button>
+                                <input type="number" id="quantity" value="10" min="1">
+                                <button onclick="changeQuantity(1)">+</button>
+                            </div>
+                            <span style="color: var(--gray); font-size: 13px;" class="t" data-zh="起订量10码" data-en="MOQ: 10 yards">起订量10码</span>
+                        </div>
+                        
+                        <div class="action-btns">
+                            <button class="btn-buy" onclick="buyNow()">立即购买</button>
+                            <button class="btn-cart" onclick="addToCart()">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 购物车 -->
+        <div id="page-cart" class="page">
+            <div class="cart-page">
+                <h1 class="cart-title">🛒 购物车</h1>
+                <div class="cart-content">
+                    <div class="cart-list" id="cartList">
+                        <!-- 购物车商品列表 -->
+                    </div>
+                    <div class="cart-summary">
+                        <h3 style="margin-bottom: 20px;">订单汇总</h3>
+                        <div class="summary-row">
+                            <span>商品总价</span>
+                            <span id="subtotal">¥0</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>运费</span>
+                            <span>¥0</span>
+                        </div>
+                        <div class="summary-total">
+                            <span>合计</span>
+                            <span class="price" id="totalPrice">¥0</span>
+                        </div>
+                        <button class="checkout-btn" onclick="goCheckout()">去结算</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 结算页 -->
+        <div id="page-checkout" class="page">
+            <div class="checkout-page">
+                <h1 class="checkout-title">确认订单</h1>
+                
+                <div class="checkout-section">
+                    <div class="section-header">选择收货地址</div>
+                    <div class="address-list">
+                        <div class="address-card active">
+                            <div class="address-name">（收件人）</div>
+                            <div class="address-phone">（联系电话）</div>
+                            <div class="address-detail">（收货地址）</div>
+                        </div>
+                        <div class="address-card">
+                            <div style="color: var(--gray); text-align: center; padding: 20px;">+ 添加新地址</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="checkout-section">
+                    <div class="section-header">支付方式</div>
+                    <div class="payment-methods">
+                        <div class="payment-method active">
+                            <span>📱</span> 微信支付
+                        </div>
+                        <div class="payment-method">
+                            <span>💳</span> 支付宝
+                        </div>
+                        <div class="payment-method">
+                            <span>🏦</span> 银行转账
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="checkout-section">
+                    <div class="section-header">商品清单</div>
+                    <div class="order-items" id="orderItems"></div>
+                </div>
+                
+                <div class="checkout-section">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 14px; color: var(--gray);">共 <span id="orderCount">0</span> 件商品</span>
+                        <div style="text-align: right;">
+                            <div style="font-size: 14px; color: var(--gray);">应付总额</div>
+                            <div style="font-size: 32px; font-weight: 700; color: var(--red);" id="orderTotal">¥0</div>
+                        </div>
+                    </div>
+                    <button class="checkout-btn" style="margin-top: 20px;" onclick="submitOrder()">提交订单</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 支付页 -->
+        <div id="page-payment" class="page">
+            <div class="payment-page">
+                <div class="payment-amount" id="paymentAmount">¥0</div>
+                <div class="payment-label">微信支付</div>
+                <div class="qr-code">
+                    [ 模拟二维码 ]
+                    <br><br>
+                    请使用微信扫码支付
+                </div>
+                <div class="payment-tips">
+                    <p>订单号：<span id="orderNo">-</span></p>
+                    <p style="margin-top: 8px;">支付完成后将自动跳转到订单页面</p>
+                </div>
+                <button class="btn btn-primary" style="margin-top: 30px;" onclick="completePayment()">模拟支付成功</button>
+            </div>
+        </div>
+        
+        <!-- 用户中心 -->
+        <div id="page-user" class="page">
+            <div class="user-page">
+                <div class="user-layout">
+                    <div class="user-sidebar">
+                        <div class="user-avatar-large">用</div>
+                        <div class="user-name">（用户名）</div>
+                        <ul class="user-menu">
+                            <li class="active" onclick="showUserTab('orders')">我的订单</li>
+                            <li onclick="showUserTab('address')">收货地址</li>
+                            <li onclick="showUserTab('profile')">个人信息</li>
+                        </ul>
+                    </div>
+                    <div class="user-content">
+                        <div id="user-tab-orders">
+                            <h3 style="margin-bottom: 20px;">我的订单</h3>
+                            <div class="order-tabs">
+                                <div class="order-tab active" onclick="filterOrders('all')">全部</div>
+                                <div class="order-tab" onclick="filterOrders('pending')">待付款</div>
+                                <div class="order-tab" onclick="filterOrders('paid')">待发货</div>
+                                <div class="order-tab" onclick="filterOrders('shipped')">待收货</div>
+                                <div class="order-tab" onclick="filterOrders('completed')">已完成</div>
+                            </div>
+                            <div id="orderList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 定制服务 -->
+        <div id="page-custom" class="page">
+            <section class="section">
+                <div class="section-title">
+                    <h2>定制服务</h2>
+                    <p>来样定制，小单快反，专业打样</p>
+                </div>
+                <div style="max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 12px;">
+                    <h3 style="margin-bottom: 20px;">定制流程</h3>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 40px;">
+                        <div style="text-align: center;">
+                            <div style="width: 60px; height: 60px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 10px;">1</div>
+                            <div>提供样品/设计稿</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="width: 60px; height: 60px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 10px;">2</div>
+                            <div>确认打样</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="width: 60px; height: 60px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 10px;">3</div>
+                            <div>支付打样费</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="width: 60px; height: 60px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 10px;">4</div>
+                            <div>确认样品</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="width: 60px; height: 60px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 10px;">5</div>
+                            <div>大货生产</div>
+                        </div>
+                    </div>
+                    <div style="background: var(--light); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                        <h4 style="margin-bottom: 10px;">联系我们 / Contact Us</h4>
+                        <p>📞 电话 / Tel：15158088222</p>
+                        <p>📍 地址：杭州市上城区汽车东站小商品市场2楼2179-2162档口</p>
+                        <p>👤 联系人 / Contact：王先生 (Mr. Wang)</p>
+                        <p>💬 WhatsApp：+86 151 5808 8222</p>
+                    </div>
+                    <div style="display:flex;gap:12px;">
+                        <button class="btn btn-primary" style="flex:1;" onclick="showToast('请拨打电话或到店咨询定制服务')">立即咨询定制</button>
+                        <button class="btn btn-outline" style="flex:1;border-color:var(--gold);color:var(--gold);" onclick="showInquiry()">🌍 International Inquiry</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- 关于我们 -->
+        <div id="page-about" class="page">
+            <section class="section">
+                <div class="section-title">
+                    <h2 class="t" data-zh="关于华伦罗兰" data-en="About Hualun Luolan">关于华伦罗兰</h2>
+                    <p class="t" data-zh="9年专注中高端刺绣花边面料" data-en="9 Years Specializing in Premium Embroidery Lace">9年专注中高端刺绣花边面料</p>
+                </div>
+                <div style="max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 12px; line-height: 2;">
+                    <h3 style="margin-bottom: 20px;">杭州台艺服饰辅料有限公司</h3>
+                    <p>华伦罗兰® 是杭州台艺服饰辅料有限公司旗下的高端品牌。我们专注于中高端朵花刺绣花边面料的研发、生产和销售，拥有9年行业经验。产品广泛应用于婚纱、礼服、女装、童装等领域。</p>
+                    <p style="margin-top: 16px; color: var(--gray); font-style: italic;">Hualun Luolan® is a premium brand under Hangzhou Taiyi Garment Accessories Co., Ltd. We specialize in high-end embroidery lace fabrics with 9 years of industry experience.</p>
+                    <p style="margin-top: 16px;"><strong>核心优势 / Core Advantages：</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 8px;">
+                        <li>来样定制，精准还原 / Custom sample replication</li>
+                        <li>小单快反，100码起订 / Fast turnaround, MOQ 100 yards</li>
+                        <li>品质稳定，交期准时 / Stable quality, on-time delivery</li>
+                        <li>9年老店，信誉保证 / 9-year reputation</li>
+                    </ul>
+                    <div style="margin-top: 30px; background: var(--light); padding: 20px; border-radius: 10px;">
+                        <p>📍 杭州市上城区汽车东站小商品市场2楼2179-2162档口</p>
+                        <p>📞 15158088222 &nbsp;&nbsp; 💬 WhatsApp: +86 151 5808 8222</p>
+                        <p>👤 王先生 (Mr. Wang)</p>
+                    </div>
+                    <button class="btn btn-primary" style="margin-top:24px;width:100%;" onclick="showInquiry()">🌍 Global Inquiry / 国际询盘</button>
+                </div>
+            </section>
+        </div>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>华伦罗兰®</h3>
+                <p>杭州台艺服饰辅料有限公司<br>Premium Embroidery Lace Supplier<br>9 Years of Excellence</p>
+            </div>
+            <div>
+                <h4>产品中心 / Products</h4>
+                <ul class="footer-links">
+                    <li><a href="#" onclick="showPage('products')">刺绣花边 / Embroidery Lace</a></li>
+                    <li><a href="#" onclick="showPage('products')">条码织带 / Ribbon</a></li>
+                    <li><a href="#" onclick="showPage('custom')">定制服务 / Custom</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>客户服务 / Service</h4>
+                <ul class="footer-links">
+                    <li><a href="#" onclick="showInquiry()">🌍 国际采购 / Global Order</a></li>
+                    <li><a href="#" onclick="showPage('custom')">定制流程 / Custom Process</a></li>
+                    <li><a href="#" onclick="showPage('about')">关于我们 / About Us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>联系我们 / Contact</h4>
+                <ul class="footer-links">
+                    <li>📞 15158088222</li>
+                    <li>💬 WhatsApp: +86 151 5808 8222</li>
+                    <li>👤 王先生 (Mr. Wang)</li>
+                    <li>📍 杭州市上城区汽车东站<br>&nbsp;&nbsp;&nbsp;&nbsp;小商品市场2楼2179档口</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 杭州台艺服饰辅料有限公司 版权所有 | hualunluolan.com</p>
+        </div>
+    </footer>
+    
+    <script>
+        // 商品数据
+        const products = [
+            { id: 1, name: 'Color 1 - 金色珠片花朵', nameEn: 'Color 1 - Gold Sequin Flowers', desc: '4.9cm宽，重工珠片刺绣', descEn: '4.9cm width, heavy beaded embroidery', price: 5, priceUnit: 'USD', moq: 'From $3', image: '', tags: ['热销', '新品'], category: 'beaded' },
+            { id: 2, name: 'Color 2 - 绿色珠片藤蔓', nameEn: 'Color 2 - Green Sequin Vine', desc: '3.5cm宽，清新绿色系', descEn: '3.5cm width, fresh green', price: 4, priceUnit: 'USD', moq: 'From $3', image: '', tags: ['热销', '新品'], category: 'beaded' },
+            { id: 3, name: 'Color 3 - 彩色大花边', nameEn: 'Color 3 - Colorful Large Lace', desc: '12cm宽，豪华款', descEn: '12cm width, luxury style', price: 7, priceUnit: 'USD', moq: 'From $3', image: '', tags: ['新品', '豪华'], category: 'beaded' },
+            { id: 4, name: 'Color 4 - 金色叶子纹', nameEn: 'Color 4 - Gold Leaf Pattern', desc: '6.0cm宽，经典叶纹', descEn: '6.0cm width, classic leaf', price: 7, priceUnit: 'USD', moq: 'From $3', image: '', tags: ['热销'], category: 'beaded' },
+            { id: 5, name: 'Color 5 - 粉色花朵', nameEn: 'Color 5 - Pink Flowers', desc: '4.0cm宽，浪漫粉色', descEn: '4.0cm width, romantic pink', price: 7, priceUnit: 'USD', moq: 'From $3', image: '', tags: ['新品'], category: 'beaded' },
+            { id: 6, name: 'Color 6 - 金色小花', nameEn: 'Color 6 - Gold Small Flowers', desc: '3.0cm宽，精致小花', descEn: '3.0cm width, delicate flowers', price: 3, priceUnit: 'USD', moq: 'From $3', image: '', tags: ['热销', '特价'], category: 'beaded' },
+            { id: 7, name: 'Color 7 - 超宽豪华款', nameEn: 'Color 7 - Ultra Wide Luxury', desc: '16cm宽，超宽设计', descEn: '16cm width, ultra wide', price: 10, priceUnit: 'USD', moq: 'From $3', image: '', tags: ['豪华'], category: 'beaded' },
+            { id: 8, name: 'Color 8 - 金绿配色', nameEn: 'Color 8 - Gold Green Mix', desc: '9.5cm宽，金绿搭配', descEn: '9.5cm width, gold-green', price: 7, priceUnit: 'USD', moq: 'From $3', image: '', tags: ['热销'], category: 'beaded' },
+            { id: 9, name: 'Color 9 - 彩色花朵', nameEn: 'Color 9 - Colorful Flowers', desc: '4.0cm宽，多彩设计', descEn: '4.0cm width, colorful', price: 7, priceUnit: 'USD', moq: 'From $3', image: '', tags: ['新品'], category: 'beaded' },
+            { id: 10, name: 'Color 10 - 粉色卷草', nameEn: 'Color 10 - Pink Scroll', desc: '3.8cm宽，粉色系', descEn: '3.8cm width, pink', price: 7, priceUnit: 'USD', moq: 'From $3', image: '', tags: ['热销'], category: 'beaded' },
+            { id: 11, name: 'Color 11 - 孔雀尾纹', nameEn: 'Color 11 - Peacock Tail', desc: '3.8cm宽，孔雀尾设计', descEn: '3.8cm width, peacock tail', price: 4, priceUnit: 'USD', moq: 'From $3', image: '', tags: ['新品', '特色'], category: 'beaded' },
+            { id: 12, name: 'Color 12 - 蓝绿花朵', nameEn: 'Color 12 - Blue Green Flowers', desc: '3.9cm宽，蓝绿配色', descEn: '3.9cm width, blue-green', price: 4, priceUnit: 'USD', moq: 'From $3', image: '', tags: ['热销'], category: 'beaded' },
+
+            { id: 5, name: '彩色刺绣花边', nameEn: 'Colorful Embroidery Lace', desc: '多色可选，童装适用', descEn: 'Multi-color options, for children wear', price: 12, image: '🌺', tags: ['现货'] },
+            { id: 6, name: '金线刺绣条码', nameEn: 'Metallic Gold Embroidery Band', desc: '金属光泽，高端服饰', descEn: 'Metallic sheen, for luxury garments', price: 28, image: '✨', tags: ['定制'] },
+            { id: 7, name: '蕾丝刺绣花边', nameEn: 'French Lace Embroidery', desc: '法式蕾丝，优雅精致', descEn: 'French lace, elegant and exquisite', price: 22, image: '🌹', tags: ['热销'] },
+            { id: 8, name: '民族风刺绣带', nameEn: 'Ethnic Style Embroidery Band', desc: '传统工艺，特色服饰', descEn: 'Traditional craftsmanship, ethnic wear', price: 16, image: '🏵️', tags: ['现货'] },
+            { id: 9, name: '珠片刺绣花边', nameEn: 'Sequin Embroidery Lace', desc: '手工珠片，舞台服装', descEn: 'Hand-sewn sequins, for stage costumes', price: 35, image: '💎', tags: ['定制'] }
+        ];
+        
+        // 购物车数据
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let orders = JSON.parse(localStorage.getItem('orders')) || [];
+        let currentProduct = null;
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            renderProducts();
+            updateCartCount();
+        });
+        
+        // 渲染商品列表
+        function renderProducts() {
+            const homeHtml = products.slice(0, 4).map(p => createProductCard(p)).join('');
+            const allHtml = products.map(p => createProductCard(p)).join('');
+            document.getElementById('homeProducts').innerHTML = homeHtml;
+            document.getElementById('allProducts').innerHTML = allHtml;
+        }
+        
+        function isImageSource(value) {
+            if (!value || typeof value !== 'string') return false;
+            const source = value.trim();
+            return /^(https?:\/\/|data:|\/|\.\/|\.\.\/|images\/)/i.test(source) || /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(source);
+        }
+
+        function getPlaceholderHtml(label) {
+            return `
+                <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;gap:10px;color:#b59a5b;text-align:center;">
+                    <div style="font-size:54px;line-height:1;">🌸</div>
+                    <div style="font-size:14px;">${label}</div>
+                </div>
+            `;
+        }
+
+        function renderProductImage(image, alt, label, style) {
+            if (!isImageSource(image)) {
+                return getPlaceholderHtml(label);
+            }
+            return `<img src="${image}" alt="${alt}" style="${style}" onerror="this.remove();this.parentElement.innerHTML=getPlaceholderHtml('${label}')">`;
+        }
+
+        function renderThumbImage(image, alt) {
+            if (!isImageSource(image)) {
+                return '<div style="font-size:20px;line-height:1;">🌸</div>';
+            }
+            return `<img src="${image}" alt="${alt}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" onerror="this.remove();this.parentElement.innerHTML='<div style=\'font-size:20px;line-height:1;\'>🌸</div>'">`;
+        }
+
+        function createProductCard(product) {
+            const placeholderLabel = currentLang === 'en' ? 'Image coming soon' : '图片待更新';
+            const imageHtml = renderProductImage(product.image, product.name, placeholderLabel, 'width:100%;height:100%;object-fit:contain;');
+            return `
+                <div class="product-card" onclick="showProductDetail(${product.id})">
+                    <div class="product-img" style="background:#f8f5f0;">${imageHtml}</div>
+                    <div class="product-info">
+                        <div class="product-name">${currentLang === 'en' && product.nameEn ? product.nameEn : product.name}</div>
+                        <div class="product-desc">${currentLang === 'en' && product.descEn ? product.descEn : product.desc}</div>
+                        <div class="product-price">
+                            <span class="price-current">${product.moq && product.priceUnit === 'USD' ? product.moq : (product.priceUnit === 'USD' ? '$' + product.price : '¥' + product.price)}</span>
+                            ${!product.moq ? `<span class="price-unit">${currentLang === 'en' ? '/yard' : '/码'}</span>` : ''}
+                        </div>
+                        <div class="product-tags">
+                            ${product.tags.map(t => `<span class="product-tag">${t}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 显示商品详情
+        function showProductDetail(id) {
+            currentProduct = products.find(p => p.id === id);
+            const name = currentLang === 'en' && currentProduct.nameEn ? currentProduct.nameEn : currentProduct.name;
+            document.getElementById('productName').textContent = name;
+            const priceText = currentProduct.moq && currentProduct.priceUnit === 'USD' 
+                ? currentProduct.moq
+                : (currentProduct.priceUnit === 'USD' ? '$' + currentProduct.price : '¥' + currentProduct.price);
+            document.getElementById('productPrice').textContent = priceText;
+            
+            // 更新价格单位（如果moq已包含单位则不显示）
+            const unitEl = document.querySelector('#page-product .price-unit');
+            if (unitEl) {
+                unitEl.textContent = currentProduct.moq ? '' : (currentLang === 'en' ? '/yard' : '/码');
+            }
+            
+            const imageEl = document.getElementById('productImage');
+            const placeholderLabel = currentLang === 'en' ? 'Image coming soon' : '图片待更新';
+            imageEl.innerHTML = renderProductImage(currentProduct.image, name, placeholderLabel, 'width:100%;height:100%;object-fit:contain;border-radius:12px;background:#f5f5f5;');
+            
+            document.getElementById('quantity').value = 10;
+            showPage('product');
+        }
+
+        
+        // 页面切换
+        function showPage(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + page).classList.add('active');
+            window.scrollTo(0, 0);
+            
+            if (page === 'cart') renderCart();
+            if (page === 'user') renderOrders();
+        }
+        
+        // 数量调整
+        function changeQuantity(delta) {
+            const input = document.getElementById('quantity');
+            let val = parseInt(input.value) + delta;
+            if (val < 1) val = 1;
+            input.value = val;
+        }
+        
+        // 加入购物车
+        function addToCart() {
+            if (!currentProduct) return;
+            
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const color = document.querySelector('.spec-options:nth-child(2) .spec-option.active')?.textContent || '米白色';
+            const width = document.querySelector('.spec-options:nth-child(3) .spec-option.active')?.textContent || '3cm';
+            
+            const item = {
+                id: Date.now(),
+                productId: currentProduct.id,
+                name: currentProduct.name,
+                price: currentProduct.price,
+                image: currentProduct.image || '',
+                color: color,
+                width: width,
+                quantity: quantity
+            };
+
+            
+            cart.push(item);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            showToast('已加入购物车');
+        }
+        
+        // 立即购买
+        function buyNow() {
+            addToCart();
+            showPage('cart');
+        }
+        
+        // 更新购物车数量
+        function updateCartCount() {
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = count;
+        }
+        
+        // 渲染购物车
+        function renderCart() {
+            const cartList = document.getElementById('cartList');
+            if (cart.length === 0) {
+                cartList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🛒</div>
+                        <h3>购物车是空的</h3>
+                        <p>快去选购心仪的商品吧</p>
+                        <button class="btn btn-primary" style="margin-top: 20px;" onclick="showPage('products')">去购物</button>
+                    </div>
+                `;
+                document.getElementById('subtotal').textContent = '¥0';
+                document.getElementById('totalPrice').textContent = '¥0';
+                return;
+            }
+            
+            let subtotal = 0;
+            const html = cart.map(item => {
+                const total = item.price * item.quantity;
+                subtotal += total;
+                return `
+                    <div class="cart-item">
+                        <div class="cart-item-img">${renderThumbImage(item.image, item.name)}</div>
+                        <div class="cart-item-info">
+
+                            <h4>${item.name}</h4>
+                            <p>${item.color} / ${item.width}</p>
+                        </div>
+                        <div>×${item.quantity}</div>
+                        <div class="cart-item-price">¥${total}</div>
+                        <div class="remove-btn" onclick="removeFromCart(${item.id})">删除</div>
+                    </div>
+                `;
+            }).join('');
+            
+            cartList.innerHTML = html;
+            document.getElementById('subtotal').textContent = '¥' + subtotal;
+            document.getElementById('totalPrice').textContent = '¥' + subtotal;
+        }
+        
+        // 删除购物车商品
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            renderCart();
+            showToast('已删除');
+        }
+        
+        // 去结算
+        function goCheckout() {
+            if (cart.length === 0) {
+                showToast('购物车是空的');
+                return;
+            }
+            renderOrderItems();
+            showPage('checkout');
+        }
+        
+        // 渲染订单商品
+        function renderOrderItems() {
+            let total = 0;
+            const html = cart.map(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                return `
+                    <div class="order-item">
+                        <div class="order-item-img">${renderThumbImage(item.image, item.name)}</div>
+                        <div class="order-item-info">
+
+                            <div style="font-weight: 500;">${item.name}</div>
+                            <div style="font-size: 13px; color: var(--gray);">${item.color} / ${item.width}</div>
+                        </div>
+                        <div>×${item.quantity}</div>
+                        <div class="order-item-price">¥${itemTotal}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('orderItems').innerHTML = html;
+            document.getElementById('orderCount').textContent = cart.length;
+            document.getElementById('orderTotal').textContent = '¥' + total;
+        }
+        
+        // 提交订单
+        function submitOrder() {
+            const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            const orderNo = 'DD' + Date.now();
+            
+            const order = {
+                id: orderNo,
+                items: [...cart],
+                total: total,
+                status: 'pending',
+                createTime: new Date().toLocaleString()
+            };
+            
+            orders.unshift(order);
+            localStorage.setItem('orders', JSON.stringify(orders));
+            
+            // 清空购物车
+            cart = [];
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            
+            // 显示支付页
+            document.getElementById('paymentAmount').textContent = '¥' + total;
+            document.getElementById('orderNo').textContent = orderNo;
+            showPage('payment');
+        }
+        
+        // 完成支付
+        function completePayment() {
+            const orderNo = document.getElementById('orderNo').textContent;
+            const order = orders.find(o => o.id === orderNo);
+            if (order) {
+                order.status = 'paid';
+                localStorage.setItem('orders', JSON.stringify(orders));
+            }
+            showToast('支付成功！');
+            setTimeout(() => {
+                showPage('user');
+            }, 1500);
+        }
+        
+        // 渲染订单列表
+        function renderOrders(filter = 'all') {
+            const orderList = document.getElementById('orderList');
+            let filteredOrders = orders;
+            
+            if (filter !== 'all') {
+                filteredOrders = orders.filter(o => o.status === filter);
+            }
+            
+            if (filteredOrders.length === 0) {
+                orderList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📦</div>
+                        <h3>暂无订单</h3>
+                    </div>
+                `;
+                return;
+            }
+            
+            const statusMap = {
+                'pending': '待付款',
+                'paid': '待发货',
+                'shipped': '待收货',
+                'completed': '已完成'
+            };
+            
+            const html = filteredOrders.map(order => {
+                const firstItem = order.items[0];
+                const itemCount = order.items.length;
+                return `
+                    <div class="order-card">
+                        <div class="order-header">
+                            <span>订单号：${order.id}</span>
+                            <span>${order.createTime}</span>
+                        </div>
+                        <div class="order-body">
+                            <div class="order-item-img">${renderThumbImage(firstItem.image, firstItem.name)}</div>
+                            <div style="flex: 1;">
+
+                                <div style="font-weight: 500;">${firstItem.name} ${itemCount > 1 ? '等' + itemCount + '件商品' : ''}</div>
+                                <div style="font-size: 13px; color: var(--gray);">${firstItem.color} / ${firstItem.width}</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-weight: 700; color: var(--red);">¥${order.total}</div>
+                                <div class="order-status">${statusMap[order.status]}</div>
+                            </div>
+                        </div>
+                        <div class="order-footer">
+                            ${order.status === 'pending' ? `<button class="btn-small btn-pay" onclick="payOrder('${order.id}')">立即付款</button>` : ''}
+                            <button class="btn-small" style="background: white; border: 1px solid #ddd;">查看详情</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            orderList.innerHTML = html;
+        }
+        
+        // 筛选订单
+        function filterOrders(status) {
+            document.querySelectorAll('.order-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            renderOrders(status);
+        }
+        
+        // 支付订单
+        function payOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            document.getElementById('paymentAmount').textContent = '¥' + order.total;
+            document.getElementById('orderNo').textContent = orderId;
+            showPage('payment');
+        }
+        
+        // 显示提示
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+        
+        // 规格选择
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('spec-option')) {
+                e.target.parentElement.querySelectorAll('.spec-option').forEach(o => o.classList.remove('active'));
+                e.target.classList.add('active');
+            }
+            if (e.target.classList.contains('payment-method')) {
+                document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
+                e.target.classList.add('active');
+            }
+            if (e.target.classList.contains('address-card')) {
+                document.querySelectorAll('.address-card').forEach(a => a.classList.remove('active'));
+                e.target.classList.add('active');
+            }
+        });
+        
+        // 用户标签切换
+        function showUserTab(tab) {
+            document.querySelectorAll('.user-menu li').forEach(l => l.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // ===== 国际化：语言切换 =====
+        let currentLang = 'zh';
+
+        function toggleLang() {
+            currentLang = currentLang === 'zh' ? 'en' : 'zh';
+            const btn = document.getElementById('langBtn');
+            btn.textContent = currentLang === 'zh' ? '🌐 EN' : '🌐 中文';
+            document.querySelectorAll('.t').forEach(el => {
+                const val = el.getAttribute('data-' + currentLang);
+                if (val) el.textContent = val;
+            });
+            // 更新商品列表
+            renderProductsLang();
+        }
+
+        function renderProductsLang() {
+            const homeHtml = products.slice(0, 4).map(p => createProductCard(p)).join('');
+            const allHtml = products.map(p => createProductCard(p)).join('');
+            document.getElementById('homeProducts').innerHTML = homeHtml;
+            document.getElementById('allProducts').innerHTML = allHtml;
+        }
+
+        // ===== 国际采购询盘弹窗 =====
+        function showInquiry() {
+            document.getElementById('inquiryModal').classList.add('show');
+        }
+        function closeInquiry() {
+            document.getElementById('inquiryModal').classList.remove('show');
+        }
+        function showPaypalInfo() {
+            document.getElementById('inquiryModal').classList.remove('show');
+            document.getElementById('paypalModal').classList.add('show');
+        }
+
+        // 点击弹窗背景关闭
+        document.getElementById('inquiryModal').addEventListener('click', function(e) {
+            if (e.target === this) closeInquiry();
+        });
+    </script>
+</body>
+</html>
