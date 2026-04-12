@@ -1059,6 +1059,98 @@
             color: var(--gray-light);
             font-size: 13px;
         }
+
+        /* 视频展示页 */
+        .videos-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 28px;
+        }
+
+        .video-card {
+            background: white;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+            transition: transform 0.35s cubic-bezier(.4,0,.2,1), box-shadow 0.35s;
+        }
+
+        .video-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 36px rgba(0,0,0,0.14);
+        }
+
+        .video-card video {
+            width: 100%;
+            display: block;
+            background: #1a1a1a;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+        }
+
+        .video-card-info {
+            padding: 18px 20px;
+        }
+
+        .video-card-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 6px;
+        }
+
+        .video-card-desc {
+            font-size: 13px;
+            color: var(--gray);
+            line-height: 1.5;
+        }
+
+        .video-play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.15);
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .video-card:hover .video-play-overlay {
+            opacity: 0;
+        }
+
+        .video-play-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(255,255,255,0.92);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .video-play-icon::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 10px 0 10px 18px;
+            border-color: transparent transparent transparent var(--primary-dark);
+            margin-left: 4px;
+        }
+
+        .video-wrapper {
+            position: relative;
+        }
     </style>
 </head>
 <body>
@@ -1078,6 +1170,7 @@
                 <li><a onclick="showPage('products')" class="t" data-zh="全部商品" data-en="Products">全部商品</a></li>
                 <li><a onclick="showPage('custom')" class="t" data-zh="定制服务" data-en="Custom">定制服务</a></li>
                 <li><a onclick="showPage('about')" class="t" data-zh="关于我们" data-en="About">关于我们</a></li>
+                <li><a onclick="showPage('videos')" class="t" data-zh="产品视频" data-en="Videos">🎬 产品视频</a></li>
                 <li><a onclick="showInquiry()" style="color: var(--primary); font-weight:600;" class="t" data-zh="国际采购" data-en="Global Order">国际采购</a></li>
             </ul>
             
@@ -1448,6 +1541,17 @@
                 </div>
             </section>
         </div>
+
+        <!-- 产品视频 -->
+        <div id="page-videos" class="page">
+            <section class="videos-section">
+                <div class="section-title">
+                    <h2 class="t" data-zh="产品视频展示" data-en="Product Videos">🎬 产品视频展示</h2>
+                    <p class="t" data-zh="真实产品展示，感受刺绣花边的精致工艺" data-en="See our embroidery lace products in detail">真实产品展示，感受刺绣花边的精致工艺</p>
+                </div>
+                <div class="videos-grid" id="videosGrid"></div>
+            </section>
+        </div>
     </div>
     
     <!-- 页脚 -->
@@ -1519,6 +1623,7 @@
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
             renderProducts();
+            renderVideos();
             updateCartCount();
         });
         
@@ -1613,6 +1718,7 @@
             
             if (page === 'cart') renderCart();
             if (page === 'user') renderOrders();
+            if (page === 'videos') renderVideos();
         }
         
         // 数量调整
@@ -1923,6 +2029,68 @@
             document.getElementById('inquiryModal').classList.remove('show');
             document.getElementById('paypalModal').classList.add('show');
         }
+
+        // ===== 产品视频 =====
+        const videoList = [
+            { src: 'videos/0913cc7a_final.mp4', title: '刺绣花边展示 01', titleEn: 'Embroidery Lace 01', desc: '精致重工刺绣工艺细节', descEn: 'Fine heavy embroidery details' },
+            { src: 'videos/5a56068f_final.mp4', title: '刺绣花边展示 02', titleEn: 'Embroidery Lace 02', desc: '珠片花朵刺绣花边', descEn: 'Sequin floral embroidery lace' },
+            { src: 'videos/609c04a0_final.mp4', title: '刺绣花边展示 03', titleEn: 'Embroidery Lace 03', desc: '彩色朵花刺绣', descEn: 'Colorful floral embroidery' },
+            { src: 'videos/85941d7b_final.mp4', title: '刺绣花边展示 04', titleEn: 'Embroidery Lace 04', desc: '金线刺绣花边细节', descEn: 'Gold thread embroidery details' },
+            { src: 'videos/c7bbc046_final.mp4', title: '刺绣花边展示 05', titleEn: 'Embroidery Lace 05', desc: '蕾丝刺绣花边', descEn: 'Lace embroidery border' },
+            { src: 'videos/cc361045_final.mp4', title: '刺绣花边展示 06', titleEn: 'Embroidery Lace 06', desc: '宽幅刺绣花边展示', descEn: 'Wide embroidery lace display' },
+            { src: 'videos/e1d49413_final.mp4', title: '刺绣花边展示 07', titleEn: 'Embroidery Lace 07', desc: '手工刺绣花边工艺', descEn: 'Handcrafted embroidery process' }
+        ];
+
+        let currentPlayingVideo = null;
+
+        function renderVideos() {
+            const grid = document.getElementById('videosGrid');
+            if (!grid) return;
+            const html = videoList.map((v, i) => `
+                <div class="video-card">
+                    <div class="video-wrapper">
+                        <video 
+                            src="${v.src}" 
+                            preload="metadata" 
+                            playsinline
+                            loop
+                            muted
+                            onclick="toggleVideo(this)"
+                        ></video>
+                        <div class="video-play-overlay">
+                            <div class="video-play-icon"></div>
+                        </div>
+                    </div>
+                    <div class="video-card-info">
+                        <div class="video-card-title">${currentLang === 'en' ? v.titleEn : v.title}</div>
+                        <div class="video-card-desc">${currentLang === 'en' ? v.descEn : v.desc}</div>
+                    </div>
+                </div>
+            `).join('');
+            grid.innerHTML = html;
+        }
+
+        function toggleVideo(el) {
+            if (el.paused) {
+                if (currentPlayingVideo && currentPlayingVideo !== el) {
+                    currentPlayingVideo.pause();
+                }
+                el.play();
+                el.muted = false;
+                currentPlayingVideo = el;
+            } else {
+                el.pause();
+                currentPlayingVideo = null;
+            }
+        }
+
+        // 点击空白处停止所有视频
+        document.addEventListener('click', function(e) {
+            if (currentPlayingVideo && !e.target.closest('.video-card')) {
+                currentPlayingVideo.pause();
+                currentPlayingVideo = null;
+            }
+        });
 
         // 点击弹窗背景关闭
         document.getElementById('inquiryModal').addEventListener('click', function(e) {
