@@ -1867,15 +1867,14 @@
             setTimeout(closeRegisterModal, 2000);
         }
 
-        // 点击弹窗外关闭
-        document.getElementById('registerModal').addEventListener('click', function(e) {
-            if (e.target === this) closeRegisterModal();
-        });
-
         document.addEventListener('DOMContentLoaded', function() {
             renderProducts();
             renderVideos();
             updateCartCount();
+            // 注册弹窗点击背景关闭
+            document.getElementById('registerModal').addEventListener('click', function(e) {
+                if (e.target === this) closeRegisterModal();
+            });
             // 已注册用户或已关闭横幅则隐藏
             const user = JSON.parse(localStorage.getItem('user') || 'null');
             const bannerClosed = localStorage.getItem('registerBannerClosed');
@@ -2354,9 +2353,6 @@
             if (e.target === this) closeInquiry();
         });
     </script>
-    <!-- Vercel Analytics -->
-    <script src="https://cdn.vercel-insights.com/_vercel/insights.js" defer></script>
-
     <!-- 注册弹窗 -->
     <div id="registerModal" class="modal-overlay">
         <div class="register-modal">
@@ -2385,6 +2381,8 @@
             <div id="registerMsg" class="register-msg"></div>
         </div>
     </div>
+    <!-- Vercel Analytics -->
+    <script src="https://cdn.vercel-insights.com/_vercel/insights.js" defer></script>
 
 </body>
 </html>
