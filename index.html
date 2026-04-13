@@ -1638,15 +1638,42 @@
                         <h3 style="margin-bottom: 20px;">订单汇总</h3>
                         <div class="summary-row">
                             <span>商品总价</span>
-                            <span id="subtotal">¥0</span>
+                            <span id="subtotal">$0</span>
                         </div>
-                        <div class="summary-row">
-                            <span>运费</span>
-                            <span>¥0</span>
+                        <div class="summary-row" style="flex-direction:column;align-items:flex-start;gap:8px;">
+                            <div style="display:flex;width:100%;justify-content:space-between;align-items:center;">
+                                <span class="t" data-zh="运费" data-en="Shipping">运费</span>
+                                <span id="cartShipping">$0</span>
+                            </div>
+                            <div style="display:flex;gap:8px;width:100%;">
+                                <select id="cartCountry" onchange="calcCartShipping()" style="flex:1;padding:6px 8px;border:1px solid #ddd;border-radius:6px;font-size:12px;">
+                                    <option value="US">🇺🇸 USA</option>
+                                    <option value="UK">🇬🇧 UK</option>
+                                    <option value="FR">🇫🇷 France</option>
+                                    <option value="DE">🇩🇪 Germany</option>
+                                    <option value="AU">🇦🇺 Australia</option>
+                                    <option value="CA">🇨🇦 Canada</option>
+                                    <option value="JP">🇯🇵 Japan</option>
+                                    <option value="KR">🇰🇷 Korea</option>
+                                    <option value="RU">🇷🇺 Russia</option>
+                                    <option value="BR">🇧🇷 Brazil</option>
+                                    <option value="IN">🇮🇳 India</option>
+                                    <option value="AE">🇦🇪 UAE</option>
+                                    <option value="SA">🇸🇦 Saudi</option>
+                                    <option value="TH">🇹🇭 Thailand</option>
+                                    <option value="MY">🇲🇾 Malaysia</option>
+                                    <option value="SG">🇸🇬 Singapore</option>
+                                </select>
+                                <select id="cartCourier" onchange="calcCartShipping()" style="flex:1;padding:6px 8px;border:1px solid #ddd;border-radius:6px;font-size:12px;">
+                                    <option value="DHL">DHL (3-5天)</option>
+                                    <option value="FedEx">FedEx (4-7天)</option>
+                                    <option value="EMS">EMS (7-15天)</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="summary-total">
-                            <span>合计</span>
-                            <span class="price" id="totalPrice">¥0</span>
+                            <span class="t" data-zh="合计" data-en="Total">合计</span>
+                            <span class="price" id="totalPrice">$0</span>
                         </div>
                         <button class="checkout-btn" onclick="goCheckout()">去结算</button>
                     </div>
@@ -2133,6 +2160,11 @@
             const quantity = parseInt(document.getElementById('quantity').value);
             const color = document.querySelector('.spec-options:nth-child(2) .spec-option.active')?.textContent || '米白色';
             const width = document.querySelector('.spec-options:nth-child(3) .spec-option.active')?.textContent || '3cm';
+            const shippingText = document.getElementById('shippingCost')?.textContent || '';
+            const shippingMatch = shippingText.match(/\$([\d.]+)/);
+            const shippingCost = shippingMatch ? parseFloat(shippingMatch[1]) : 0;
+            const shipCountry = document.getElementById('shipCountry')?.value || 'US';
+            const shipCourier = document.getElementById('shipCourier')?.value || 'DHL';
             
             const item = {
                 id: Date.now(),
@@ -2142,7 +2174,10 @@
                 image: currentProduct.image || '',
                 color: color,
                 width: width,
-                quantity: quantity
+                quantity: quantity,
+                shippingCost: shippingCost,
+                shipCountry: shipCountry,
+                shipCourier: shipCourier
             };
 
             
@@ -2176,15 +2211,18 @@
                         <button class="btn btn-primary" style="margin-top: 20px;" onclick="showPage('products')">去购物</button>
                     </div>
                 `;
-                document.getElementById('subtotal').textContent = '¥0';
-                document.getElementById('totalPrice').textContent = '¥0';
+                document.getElementById('subtotal').textContent = '$0';
+                document.getElementById('cartShipping').textContent = '$0';
+                document.getElementById('totalPrice').textContent = '$0';
                 return;
             }
             
             let subtotal = 0;
+            let totalShipping = 0;
             const html = cart.map(item => {
                 const total = item.price * item.quantity;
                 subtotal += total;
+                totalShipping += (item.shippingCost || 0);
                 return `
                     <div class="cart-item">
                         <div class="cart-item-img">${renderThumbImage(item.image, item.name)}</div>
@@ -2192,17 +2230,67 @@
 
                             <h4>${item.name}</h4>
                             <p>${item.color} / ${item.width}</p>
+                            <p style="font-size:12px;color:var(--primary);margin-top:2px;">🚚 ${item.shipCourier || 'DHL'} → $${(item.shippingCost || 0).toFixed(2)}</p>
                         </div>
                         <div>×${item.quantity}</div>
-                        <div class="cart-item-price">¥${total}</div>
+                        <div class="cart-item-price">$${total.toFixed(2)}</div>
                         <div class="remove-btn" onclick="removeFromCart(${item.id})">删除</div>
                     </div>
                 `;
             }).join('');
             
             cartList.innerHTML = html;
-            document.getElementById('subtotal').textContent = '¥' + subtotal;
-            document.getElementById('totalPrice').textContent = '¥' + subtotal;
+            document.getElementById('subtotal').textContent = '$' + subtotal.toFixed(2);
+            document.getElementById('cartShipping').textContent = '$' + totalShipping.toFixed(2);
+            document.getElementById('totalPrice').textContent = '$' + (subtotal + totalShipping).toFixed(2);
+
+            // 同步国家和快递选择
+            if (cart.length > 0 && cart[0].shipCountry) {
+                document.getElementById('cartCountry').value = cart[0].shipCountry;
+                document.getElementById('cartCourier').value = cart[0].shipCourier;
+            }
+        }
+
+        // 购物车运费重算
+        function calcCartShipping() {
+            if (cart.length === 0) return;
+            const country = document.getElementById('cartCountry').value;
+            const courier = document.getElementById('cartCourier').value;
+            const rates = {
+                'US':  { 'DHL': 8.5,  'FedEx': 7.8,  'EMS': 6.2 },
+                'UK':  { 'DHL': 9.2,  'FedEx': 8.5,  'EMS': 6.8 },
+                'FR':  { 'DHL': 9.5,  'FedEx': 8.8,  'EMS': 7.0 },
+                'DE':  { 'DHL': 9.0,  'FedEx': 8.2,  'EMS': 6.5 },
+                'AU':  { 'DHL': 10.5, 'FedEx': 9.8,  'EMS': 7.5 },
+                'CA':  { 'DHL': 9.8,  'FedEx': 9.0,  'EMS': 7.2 },
+                'JP':  { 'DHL': 7.5,  'FedEx': 7.0,  'EMS': 5.5 },
+                'KR':  { 'DHL': 7.0,  'FedEx': 6.5,  'EMS': 5.0 },
+                'RU':  { 'DHL': 12.0, 'FedEx': 11.0, 'EMS': 8.5 },
+                'BR':  { 'DHL': 14.0, 'FedEx': 13.0, 'EMS': 10.0 },
+                'IN':  { 'DHL': 9.5,  'FedEx': 8.8,  'EMS': 7.0 },
+                'AE':  { 'DHL': 8.0,  'FedEx': 7.5,  'EMS': 6.0 },
+                'SA':  { 'DHL': 10.0, 'FedEx': 9.2,  'EMS': 7.8 },
+                'TH':  { 'DHL': 7.8,  'FedEx': 7.2,  'EMS': 5.5 },
+                'MY':  { 'DHL': 7.5,  'FedEx': 7.0,  'EMS': 5.2 },
+                'SG':  { 'DHL': 7.0,  'FedEx': 6.5,  'EMS': 5.0 }
+            };
+            const rate = rates[country]?.[courier] || 8.0;
+            const baseFee = 15;
+            let totalShipping = 0;
+            cart.forEach(item => {
+                const prod = products.find(p => p.id === item.productId);
+                const widthMatch = (prod?.desc || '').match(/([\d.]+)cm/);
+                const widthCm = widthMatch ? parseFloat(widthMatch[1]) : 5;
+                const weightPerYard = 0.03 + (widthCm / 100) * 0.1;
+                const totalWeight = weightPerYard * item.quantity;
+                const cost = baseFee + rate * totalWeight;
+                item.shippingCost = cost;
+                item.shipCountry = country;
+                item.shipCourier = courier;
+                totalShipping += cost;
+            });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
         }
         
         // 删除购物车商品
