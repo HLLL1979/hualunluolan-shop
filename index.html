@@ -621,7 +621,64 @@
             font-weight: 600;
             cursor: pointer;
         }
-        
+
+        /* 国际运费计算器 */
+        .shipping-calculator {
+            margin-top: 24px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f0f7ff, #e8f4fd);
+            border-radius: 12px;
+            border: 1px solid #d0e7f9;
+        }
+        .shipping-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .shipping-row {
+            margin-bottom: 12px;
+        }
+        .shipping-row label {
+            display: block;
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 4px;
+        }
+        .shipping-row select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            color: #333;
+            outline: none;
+        }
+        .shipping-row select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(26,58,92,0.1);
+        }
+        .shipping-result {
+            margin-top: 14px;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .shipping-result strong {
+            color: var(--red);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
         /* 购物车 */
         .cart-page {
             max-width: 1200px;
@@ -1523,6 +1580,47 @@
                             <button class="btn-buy" onclick="buyNow()">立即购买</button>
                             <button class="btn-cart" onclick="addToCart()">加入购物车</button>
                         </div>
+
+                        <!-- 国际运费计算器 -->
+                        <div class="shipping-calculator" id="shippingCalc">
+                            <div class="shipping-title">
+                                <span>🚚</span>
+                                <span class="t" data-zh="国际运费估算" data-en="International Shipping Estimate">国际运费估算</span>
+                            </div>
+                            <div class="shipping-row">
+                                <label class="t" data-zh="目的国家" data-en="Destination Country">目的国家</label>
+                                <select id="shipCountry" onchange="calcShipping()">
+                                    <option value="US">🇺🇸 美国 USA</option>
+                                    <option value="UK">🇬🇧 英国 UK</option>
+                                    <option value="FR">🇫🇷 法国 France</option>
+                                    <option value="DE">🇩🇪 德国 Germany</option>
+                                    <option value="AU">🇦🇺 澳大利亚 Australia</option>
+                                    <option value="CA">🇨🇦 加拿大 Canada</option>
+                                    <option value="JP">🇯🇵 日本 Japan</option>
+                                    <option value="KR">🇰🇷 韩国 South Korea</option>
+                                    <option value="RU">🇷🇺 俄罗斯 Russia</option>
+                                    <option value="BR">🇧🇷 巴西 Brazil</option>
+                                    <option value="IN">🇮🇳 印度 India</option>
+                                    <option value="AE">🇦🇪 阿联酋 UAE</option>
+                                    <option value="SA">🇸🇦 沙特 Saudi Arabia</option>
+                                    <option value="TH">🇹🇭 泰国 Thailand</option>
+                                    <option value="MY">🇲🇾 马来西亚 Malaysia</option>
+                                    <option value="SG">🇸🇬 新加坡 Singapore</option>
+                                </select>
+                            </div>
+                            <div class="shipping-row">
+                                <label class="t" data-zh="快递公司" data-en="Courier">快递公司</label>
+                                <select id="shipCourier" onchange="calcShipping()">
+                                    <option value="DHL">DHL（3-5天）</option>
+                                    <option value="FedEx">FedEx（4-7天）</option>
+                                    <option value="EMS">EMS（7-15天）</option>
+                                </select>
+                            </div>
+                            <div class="shipping-result" id="shippingResult">
+                                <span class="t" data-zh="预估运费：" data-en="Estimated shipping: ">预估运费：</span>
+                                <strong id="shippingCost">--</strong>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1959,6 +2057,53 @@
             
             document.getElementById('quantity').value = 10;
             showPage('product');
+            // 自动计算运费
+            setTimeout(calcShipping, 100);
+        }
+
+        // 国际运费计算
+        function calcShipping() {
+            const country = document.getElementById('shipCountry').value;
+            const courier = document.getElementById('shipCourier').value;
+            const qty = parseInt(document.getElementById('quantity')?.value) || 10;
+            if (!currentProduct) return;
+
+            // 估算重量：每码约0.05-0.15kg（按宽度估算）
+            const widthMatch = (currentProduct.desc || '').match(/([\d.]+)cm/);
+            const widthCm = widthMatch ? parseFloat(widthMatch[1]) : 5;
+            const weightPerYard = 0.03 + (widthCm / 100) * 0.1; // kg/码
+            const totalWeight = weightPerYard * qty;
+
+            // 运费费率表 (USD/kg)
+            const rates = {
+                'US':  { 'DHL': 8.5,  'FedEx': 7.8,  'EMS': 6.2 },
+                'UK':  { 'DHL': 9.2,  'FedEx': 8.5,  'EMS': 6.8 },
+                'FR':  { 'DHL': 9.5,  'FedEx': 8.8,  'EMS': 7.0 },
+                'DE':  { 'DHL': 9.0,  'FedEx': 8.2,  'EMS': 6.5 },
+                'AU':  { 'DHL': 10.5, 'FedEx': 9.8,  'EMS': 7.5 },
+                'CA':  { 'DHL': 9.8,  'FedEx': 9.0,  'EMS': 7.2 },
+                'JP':  { 'DHL': 7.5,  'FedEx': 7.0,  'EMS': 5.5 },
+                'KR':  { 'DHL': 7.0,  'FedEx': 6.5,  'EMS': 5.0 },
+                'RU':  { 'DHL': 12.0, 'FedEx': 11.0, 'EMS': 8.5 },
+                'BR':  { 'DHL': 14.0, 'FedEx': 13.0, 'EMS': 10.0 },
+                'IN':  { 'DHL': 9.5,  'FedEx': 8.8,  'EMS': 7.0 },
+                'AE':  { 'DHL': 8.0,  'FedEx': 7.5,  'EMS': 6.0 },
+                'SA':  { 'DHL': 10.0, 'FedEx': 9.2,  'EMS': 7.8 },
+                'TH':  { 'DHL': 7.8,  'FedEx': 7.2,  'EMS': 5.5 },
+                'MY':  { 'DHL': 7.5,  'FedEx': 7.0,  'EMS': 5.2 },
+                'SG':  { 'DHL': 7.0,  'FedEx': 6.5,  'EMS': 5.0 }
+            };
+
+            const rate = rates[country]?.[courier] || 8.0;
+            const baseFee = 15; // 基础处理费 USD
+            const cost = baseFee + rate * totalWeight;
+            const weightText = totalWeight.toFixed(1);
+
+            const timeMap = { 'DHL': '3-5', 'FedEx': '4-7', 'EMS': '7-15' };
+            const days = timeMap[courier] || '5-10';
+
+            document.getElementById('shippingCost').innerHTML =
+                `$${cost.toFixed(2)} <span style="font-size:12px;color:#999;font-weight:400;">(${weightText}kg, ${currentLang === 'en' ? days + ' days' : days + '天'})</span>`;
         }
 
         
