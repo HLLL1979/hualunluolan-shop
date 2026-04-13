@@ -31,9 +31,95 @@
         }
         
         /* 导航 */
-        .navbar {
+        /* 注册横幅 */
+        .register-banner {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
             position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1001;
+        }
+        .register-banner:hover {
+            background: linear-gradient(135deg, #16213e 0%, #0f3460 50%, #1a1a2e 100%);
+        }
+        .register-banner-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+        }
+        .register-banner-icon {
+            font-size: 22px;
+            animation: crownPulse 2s ease-in-out infinite;
+        }
+        @keyframes crownPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        .register-banner-text {
+            color: #fff;
+            font-size: 13px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .register-banner-text strong {
+            font-size: 14px;
+            color: #C9A86C;
+        }
+        .register-banner-sub {
+            color: rgba(255,255,255,0.7);
+            font-size: 11px;
+        }
+        .register-banner-btn {
+            background: linear-gradient(135deg, #C9A86C, #E8DCC8);
+            color: #1a1a2e;
+            border: none;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .register-banner-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(201, 168, 108, 0.4);
+        }
+        .register-banner-close {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.5);
+            font-size: 16px;
+            cursor: pointer;
+            padding: 4px 8px;
+            transition: color 0.3s;
+        }
+        .register-banner-close:hover {
+            color: #fff;
+        }
+        .register-banner.hidden {
+            display: none;
+        }
+        body.register-banner-hidden .navbar {
+            top: 0;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 46px;
             left: 0;
             right: 0;
             background: var(--white);
@@ -1154,6 +1240,19 @@
     </style>
 </head>
 <body>
+    <!-- 会员注册横幅 -->
+    <div id="registerBanner" class="register-banner" onclick="showPage('user')">
+        <div class="register-banner-content">
+            <span class="register-banner-icon">👑</span>
+            <span class="register-banner-text">
+                <strong class="t" data-zh="注册会员享专属优惠" data-en="Register for Exclusive Member Benefits">注册会员享专属优惠</strong>
+                <span class="register-banner-sub t" data-zh="首单立减10% · 新品优先看 · 免费样品" data-en="10% OFF First Order · Early Access · Free Samples">首单立减10% · 新品优先看 · 免费样品</span>
+            </span>
+            <button class="register-banner-btn t" data-zh="立即注册 →" data-en="Register Now →">立即注册 →</button>
+            <button class="register-banner-close" onclick="event.stopPropagation();closeRegisterBanner()">✕</button>
+        </div>
+    </div>
+
     <!-- 导航 -->
     <nav class="navbar">
         <div class="nav-container">
@@ -1624,10 +1723,27 @@
         let currentProduct = null;
         
         // 初始化
+        // 关闭注册横幅
+        function closeRegisterBanner() {
+            const banner = document.getElementById('registerBanner');
+            if (banner) {
+                banner.classList.add('hidden');
+                document.querySelector('.navbar').style.top = '0';
+                document.body.classList.add('register-banner-hidden');
+                localStorage.setItem('registerBannerClosed', 'true');
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             renderProducts();
             renderVideos();
             updateCartCount();
+            // 已注册用户或已关闭横幅则隐藏
+            const user = JSON.parse(localStorage.getItem('user') || 'null');
+            const bannerClosed = localStorage.getItem('registerBannerClosed');
+            if (user || bannerClosed) {
+                closeRegisterBanner();
+            }
         });
         
         // 渲染商品列表
