@@ -1638,12 +1638,12 @@
                         <h3 style="margin-bottom: 20px;">订单汇总</h3>
                         <div class="summary-row">
                             <span>商品总价</span>
-                            <span id="subtotal">$0</span>
+                            <span id="subtotal">$0.00</span>
                         </div>
                         <div class="summary-row" style="flex-direction:column;align-items:flex-start;gap:8px;">
                             <div style="display:flex;width:100%;justify-content:space-between;align-items:center;">
                                 <span class="t" data-zh="运费" data-en="Shipping">运费</span>
-                                <span id="cartShipping">$0</span>
+                                <span id="cartShipping">$0.00</span>
                             </div>
                             <div style="display:flex;gap:8px;width:100%;">
                                 <select id="cartCountry" onchange="calcCartShipping()" style="flex:1;padding:6px 8px;border:1px solid #ddd;border-radius:6px;font-size:12px;">
@@ -2051,7 +2051,7 @@
                         <div class="product-name">${currentLang === 'en' && product.nameEn ? product.nameEn : product.name}</div>
                         <div class="product-desc">${currentLang === 'en' && product.descEn ? product.descEn : product.desc}</div>
                         <div class="product-price">
-                            <span class="price-current">${product.moq && product.priceUnit === 'USD' ? product.moq : (product.priceUnit === 'USD' ? '$' + product.price : '¥' + product.price)}</span>
+                            <span class="price-current">${product.soldOut ? (currentLang === 'en' ? 'Sold Out' : '已售罄') : '$' + product.price.toFixed(2)}</span>
                             ${!product.moq ? `<span class="price-unit">${currentLang === 'en' ? '/yard' : '/码'}</span>` : ''}
                         </div>
                         <div class="product-tags">
@@ -2067,14 +2067,10 @@
             currentProduct = products.find(p => p.id === id);
             const name = currentLang === 'en' && currentProduct.nameEn ? currentProduct.nameEn : currentProduct.name;
             document.getElementById('productName').textContent = name;
-            const priceText = currentProduct.moq && currentProduct.priceUnit === 'USD' 
-                ? currentProduct.moq
-                : (currentProduct.priceUnit === 'USD' ? '$' + currentProduct.price : '¥' + currentProduct.price);
+            const priceText = currentProduct.soldOut 
+                ? (currentLang === 'en' ? 'Sold Out' : '已售罄')
+                : '$' + currentProduct.price.toFixed(2);
             document.getElementById('productPrice').textContent = priceText;
-            
-            // 更新价格单位（如果moq已包含单位则不显示）
-            const unitEl = document.querySelector('#page-product .price-unit');
-            if (unitEl) {
                 unitEl.textContent = currentProduct.moq ? '' : (currentLang === 'en' ? '/yard' : '/码');
             }
             
