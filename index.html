@@ -4,7 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>华伦罗兰 - 中高端朵花刺绣花边面料商城</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"></noscript>
+    <script>
+    /* Google Fonts 加载超时保护：3秒后放弃加载，使用系统字体 */
+    setTimeout(function(){
+        document.querySelectorAll('link[media="print"]').forEach(function(l){ l.media='all'; });
+    }, 3000);
+    </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -2620,7 +2629,7 @@
         });
     </script>
     <!-- Vercel Analytics -->
-    <script src="https://cdn.vercel-insights.com/_vercel/insights.js" defer></script>
+    <script src="https://cdn.vercel-insights.com/_vercel/insights.js" defer onerror="this.remove()"></script>
 
 </body>
 </html>
