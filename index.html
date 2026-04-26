@@ -2079,8 +2079,8 @@
                 ? (currentLang === 'en' ? 'Sold Out' : '已售罄')
                 : '$' + currentProduct.price.toFixed(2);
             document.getElementById('productPrice').textContent = priceText;
-                unitEl.textContent = currentProduct.moq ? '' : (currentLang === 'en' ? '/yard' : '/码');
-            }
+            var unitEl = document.getElementById('priceUnit');
+            if (unitEl) unitEl.textContent = currentProduct.moq ? '' : (currentLang === 'en' ? '/yard' : '/码');
             
             const imageEl = document.getElementById('productImage');
             const placeholderLabel = currentLang === 'en' ? 'Image coming soon' : '图片待更新';
